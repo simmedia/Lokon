@@ -4,6 +4,9 @@ import router from "./router";
 import store from "./store";
 import * as VueGoogleMaps from "vue2-google-maps";
 import ContentfulVue from 'contentful-vue';
+import StarRating from 'vue-dynamic-star-rating'
+
+Vue.component('star-rating', StarRating);
  
 Vue.use(ContentfulVue, {
   space: 'lcijgogsylev',

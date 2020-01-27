@@ -4,41 +4,56 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <google-map />
+    <div>
+      <VueStars :value="3" name="Test"/>
+      <!-- <star-rating :config="config"></star-rating> -->
+    </div>
+    <ul>
+      <li v-for="(place, index) in places" :key="index">
+        <!-- <h4>{{ place.name }}</h4> -->
+        <div>
+          <!-- <img :src="place.picture" alt=""> -->
+        </div>
+      </li>
+    </ul>
     <router-view />
   </div>
 </template>
 
 <script>
-import GoogleMap from "./components/GoogleMap";
+import VueStars from "./components/Rating"
 
 export default {
   name: "App",
-  components: {
-    GoogleMap
-  },
+  components: {VueStars},
   data() {
-    return({
+    return {
       places: [],
-      created() {
-        this.$contentful
-  .getSpace()
-  .then((res) => {
-    console.log(res);
-    
-  })
-  .catch((error) => {
-    console.log(error);
-    
-});
-      }
-    })
+      config: {
+        rating: 3.2,
+        style: {
+          fullStarColor: "#ed8a19",
+          emptyStarColor: "#737373",
+          starWidth: 10,
+          starHeight: 10
+        }
+      },
+      created: this.$contentful
+        .getEntries()
+        .then(res => {
+          this.places.push(res.items[0].fields);
+
+          console.log(res.items[0].fields.name);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+    };
   }
 };
 </script>
 
 <style lang="scss">
-
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;

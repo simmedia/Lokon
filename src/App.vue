@@ -5,8 +5,7 @@
       <router-link to="/about">About</router-link>
     </div>
     <div>
-      <VueStars :value="3" name="Test"/>
-      <!-- <star-rating :config="config"></star-rating> -->
+      <VueStars :value="3"/>
     </div>
     <ul>
       <li v-for="(place, index) in places" :key="index">

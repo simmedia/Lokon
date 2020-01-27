@@ -4,8 +4,28 @@ import Vuex from "vuex";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {},
-  mutations: {},
-  actions: {},
+  state: {
+    activeCity: '',
+    places: []
+  },
+  mutations: {
+    activeCity(state,payload) {
+      state.activeCity = payload
+    },
+    fetchPlaces(state, payload) {
+      state.places = payload
+    }
+  },
+  actions: {
+    
+  },
+  getters: {
+    initPlaces(state) {
+      return state.places
+    },
+    activeCity(state) {
+      return state.activeCity
+    }
+  },
   modules: {}
 });

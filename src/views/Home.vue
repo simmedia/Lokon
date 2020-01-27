@@ -1,18 +1,34 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <form  @submit.prevent="setActiveCity">
+      <select v-model="choosenCity" name="city" id="">
+        <option value="Nis">Nis</option>
+        <option value="Leskovac">Leskovac</option>
+      </select>
+      <input type="submit" value="Discover">
+    </form>
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
-import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
   name: "home",
+  data() {
+    return {
+      choosenCity: ''
+    }
+  },
   components: {
-    HelloWorld
+    
+  },
+  methods: {
+    setActiveCity() {
+      this.$store.commit('activeCity', this.choosenCity)
+      console.log(this.$store.getters.activeCity);
+      
+    }
   }
 };
 </script>

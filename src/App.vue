@@ -1,53 +1,63 @@
 <template>
   <div id="app">
-    <div id="nav">
+    <div v-if="activeCity" id="nav">
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
     </div>
-    <div>
-      <VueStars :value="3"/>
-    </div>
+    
+<!-- 
     <ul>
-      <li v-for="(place, index) in places" :key="index">
-        <!-- <h4>{{ place.name }}</h4> -->
+
+      <li  v-for="(place, index) in places" :key="index">
+        <h4 class="place_name">{{ place.fields.name }}</h4>
         <div>
-          <!-- <img :src="place.picture" alt=""> -->
+          <img :src="place.fields.url" />
         </div>
+        <p>
+          {{ place.fields.description }}
+        </p>
+        <p>{{ place.fields.phone }}</p>
+        <p>{{ place.fields.address }}</p>
       </li>
-    </ul>
+    </ul> -->
+
     <router-view />
   </div>
 </template>
 
 <script>
-import VueStars from "./components/Rating"
+// import GoogleMap from "./components/GoogleMap"
 
 export default {
   name: "App",
-  components: {VueStars},
+  components: {},
   data() {
     return {
-      places: [],
-      config: {
-        rating: 3.2,
-        style: {
-          fullStarColor: "#ed8a19",
-          emptyStarColor: "#737373",
-          starWidth: 10,
-          starHeight: 10
-        }
-      },
-      created: this.$contentful
-        .getEntries()
-        .then(res => {
-          this.places.push(res.items[0].fields);
-
-          console.log(res.items[0].fields.name);
-        })
-        .catch(error => {
-          console.log(error);
-        })
+      value: 5
     };
+  },
+  created() {
+     this.$contentful
+      .getEntries()
+      .then(res => {
+        let newArr = res.items
+        this.$store.commit('fetchPlaces', newArr)
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  },
+
+  computed: {
+    places() {
+      return this.$store.getters.initPlaces
+    },
+    activeCity() {
+      return this.$store.getters.activeCity
+    }
+  },
+  methods: {
+    
   }
 };
 </script>
@@ -72,5 +82,20 @@ export default {
       color: #42b983;
     }
   }
+}
+ul {
+  list-style: none;
+  display: flex;
+}
+ul li {
+  overflow: hidden;
+  width: 30%;
+  margin: 0 30px;
+}
+ul li p {
+  width: 100%;
+}
+ul li img {
+  height: 200px;
 }
 </style>

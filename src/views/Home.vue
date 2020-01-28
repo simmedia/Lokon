@@ -26,6 +26,7 @@ export default {
   methods: {
     setActiveCity() {
       this.$store.commit('activeCity', this.choosenCity)
+      this.$router.push('/places')
       console.log(this.$store.getters.activeCity);
       
     }

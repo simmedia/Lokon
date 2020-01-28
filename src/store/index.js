@@ -25,6 +25,13 @@ export default new Vuex.Store({
     },
     activeCity(state) {
       return state.activeCity
+    },
+    loadedPlace(state) {
+      return (placeId) => {
+        return state.places.find((place) => {
+          return place.sys.id === placeId
+        })
+      }
     }
   },
   modules: {}

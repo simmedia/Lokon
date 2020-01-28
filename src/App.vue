@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <div v-if="activeCity" id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
+    <div id="nav">
+      <router-link to="/places">Places</router-link> |
+      <router-link to="/">Change City</router-link>
     </div>
-    
-<!-- 
+
+    <!-- 
     <ul>
 
       <li  v-for="(place, index) in places" :key="index">
@@ -20,8 +20,9 @@
         <p>{{ place.fields.address }}</p>
       </li>
     </ul> -->
-
+   <transition name="fade" mode="out-in">
     <router-view />
+   </transition>
   </div>
 </template>
 
@@ -33,15 +34,18 @@ export default {
   components: {},
   data() {
     return {
+      places: [],
       value: 5
     };
   },
   created() {
-     this.$contentful
+    this.$contentful
       .getEntries()
       .then(res => {
-        let newArr = res.items
-        this.$store.commit('fetchPlaces', newArr)
+        let newArr = res.items;
+        this.$store.commit("fetchPlaces", newArr);
+        this.places = newArr;
+        // console.log(this.places);
       })
       .catch(error => {
         console.log(error);
@@ -49,15 +53,19 @@ export default {
   },
 
   computed: {
-    places() {
-      return this.$store.getters.initPlaces
-    },
     activeCity() {
-      return this.$store.getters.activeCity
+      return this.$store.getters.activeCity;
     }
   },
   methods: {
-    
+    // changeCat(cat) {
+    //   this.places = this.$store.getters.initPlaces;
+    //   let newCat = this.places.filter(place => {
+    //     return place.fields.category === cat;
+    //   });
+    //   this.places = newCat;
+    //   console.log(this.places);
+    // }
   }
 };
 </script>
@@ -97,5 +105,11 @@ ul li p {
 }
 ul li img {
   height: 200px;
+}
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
